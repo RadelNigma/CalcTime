@@ -18,40 +18,40 @@ public class Main {
         }
     }
 
-    public static String getFormattedLine(String line) {
-        char[] chars = line.toCharArray();
-        StringBuilder token = new StringBuilder();
+    public static String getFormattedString(String sourceString) {
+        char[] chars = sourceString.toCharArray();
+        StringBuilder formattedString = new StringBuilder();
 
         for (char ch : chars) {
             if (Pattern.matches("[\\d.,:;]", String.valueOf(ch))) {
                 if (Pattern.matches("[.,:;]", String.valueOf(ch))) {
                     ch = '.';
                 }
-                token.append(ch);
+                formattedString.append(ch);
             } else if (Pattern.matches("[+\\-*/]", String.valueOf(ch))) {
-                token.append(" ").append(ch).append(" ");
+                formattedString.append(" ").append(ch).append(" ");
             } else {
                 System.out.println("Недопустимый символ " + ch);
                 return "";
             }
         }
-        return String.valueOf(token);
+        return String.valueOf(formattedString);
     }
 
-    public static long getSeconds(String[] list) {
+    public static long getSeconds(String[] tokens) {
         long sec = 0;
         String operator = "";
         try {
-            for (String token : list) {
-                if (!token.matches("\\d+\\.\\d+") && !token.matches("[+\\-*/]")) {
+            for (String token : tokens) {
+                if (!token.matches("\\d+\\.\\d{2,}") && !token.matches("[+\\-*/]")) {
                     System.out.printf("Некорректный ввод %s\n", token);
                     return -1;
                 }
-                if (token.matches("\\d+\\.\\d+")) {
+                if (token.matches("\\d+\\.\\d{2,}")) {
                     long hour = Long.parseLong(token.split("\\.")[0]);
                     long minute = Long.parseLong(token.split("\\.")[1]);
                     if (minute > 59) {
-                        System.out.printf("Некорректный ввод %02d минут! Корректный ввод [0-59]\n", minute);
+                        System.out.printf("Некорректный ввод %02d минут! Корректный ввод [00-59]\n", minute);
                         return -1;
                     }
                     long tokenSeconds = hour * 3600 + minute * 60;
@@ -87,9 +87,9 @@ public class Main {
         while (true) {
             System.out.print("Введите выражение:\t");
             Scanner scanner = new Scanner(System.in);
-            String line = scanner.nextLine();
-            String[] list = getFormattedLine(line).split(" ");
-            printResult(getSeconds(list));
+            String sourceString = scanner.nextLine();
+            String[] tokens = getFormattedString(sourceString).split(" ");
+            printResult(getSeconds(tokens));
         }
     }
 }
