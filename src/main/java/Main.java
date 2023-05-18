@@ -43,7 +43,7 @@ public class Main {
         String operator = "";
         try {
             for (String token : tokens) {
-                if (!token.matches("\\d+\\.\\d{2,}") && !token.matches("[+\\-*/]")) {
+                if (!token.matches("\\d+\\.\\d{2,}") && !token.matches("[+\\-*/]") && !token.matches("\\d")) {
                     System.out.printf("Некорректный ввод %s\n", token);
                     return -1;
                 }
